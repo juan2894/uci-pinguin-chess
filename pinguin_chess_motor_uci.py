@@ -100,8 +100,14 @@ def find_best_move(board):
     return random.choice(legal_moves)
 
 # ==============================================================================
-# BUCLE PRINCIPAL UCI
+# BUCLE PRINCIPAL UCI Y OPCIONES
 # ==============================================================================
+
+# Opciones básicas soportadas por el motor
+OPTIONS = {
+    "OwnBook": {"type": "check", "default": "false", "value": "false"},
+    "Debug Log File": {"type": "string", "default": "", "value": ""}
+}
 
 def uci_loop():
     """
@@ -124,9 +130,30 @@ def uci_loop():
             
         if line == "uci":
             sys.stdout.write("id name PingunoChess\n")
-            sys.stdout.write(f"id author Juan Felipe Garavito Arias\n")
+            sys.stdout.write("id author Juan Felipe Garavito Arias\n")
+            for name, details in OPTIONS.items():
+                sys.stdout.write(f"option name {name} type {details['type']} default {details['default']}\n")
             sys.stdout.write("uciok\n")
             sys.stdout.flush()
+
+        elif line.startswith("setoption name "):
+            # Formato: setoption name <Name> [value <Value>]
+            # Quitar el prefijo
+            option_str = line[len("setoption name "):]
+            if " value " in option_str:
+                name, value = option_str.split(" value ", 1)
+            else:
+                name = option_str
+                value = ""
+
+            name = name.strip()
+            value = value.strip()
+
+            if name in OPTIONS:
+                OPTIONS[name]["value"] = value
+                log(f"Motor: Opción '{name}' actualizada a '{value}'")
+            else:
+                log(f"Motor: Opción desconocida '{name}'")
         
         elif line == "isready":
             sys.stdout.write("readyok\n")
@@ -153,7 +180,32 @@ def uci_loop():
                 for move_uci in parts[moves_start_index+1:]:
                     board.push_uci(move_uci)
 
+        elif line == "stop":
+            # Dado que el motor responde de inmediato, si recibimos 'stop' simplemente
+            # lo registramos para cumplir con la especificación UCI.
+            log("Motor: Recibido comando 'stop'. Búsqueda detenida (si aplicara).")
+
         elif line.startswith("go"):
+            # Procesar los parámetros del comando "go" (tiempo, incremento, etc.)
+            parts = line.split()
+            wtime = btime = winc = binc = movetime = None
+
+            try:
+                if "wtime" in parts:
+                    wtime = int(parts[parts.index("wtime") + 1])
+                if "btime" in parts:
+                    btime = int(parts[parts.index("btime") + 1])
+                if "winc" in parts:
+                    winc = int(parts[parts.index("winc") + 1])
+                if "binc" in parts:
+                    binc = int(parts[parts.index("binc") + 1])
+                if "movetime" in parts:
+                    movetime = int(parts[parts.index("movetime") + 1])
+            except (ValueError, IndexError):
+                log("Motor: Error al parsear los parámetros de tiempo del comando 'go'.")
+
+            log(f"Motor: Analizando jugada. Tiempos recibidos -> wtime: {wtime}, btime: {btime}, winc: {winc}, binc: {binc}, movetime: {movetime}")
+
             # La GUI pide al motor que piense y encuentre un movimiento
             best_move = find_best_move(board)
             # El motor responde con su mejor jugada en formato UCI (ej: "e2e4")
