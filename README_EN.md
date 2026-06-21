@@ -26,7 +26,7 @@ PingunoChess is a basic chess engine compatible with the UCI (Universal Chess In
 2. Install the required library using pip:
 
 ```bash
-pip install chess
+pip install python-chess
 ```
 
 3. Download the `pinguin_chess_motor_uci.py` file to your machine.
