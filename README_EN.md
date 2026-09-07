@@ -31,6 +31,15 @@ pip install python-chess
 
 3. Download the `pinguin_chess_motor_uci.py` file to your machine.
 
+## Tutorial Course
+
+To learn how to use, understand the internal architecture, connect to GUIs, and extend this repository, check out our **[PingunoChess Interactive Course (Spanish)](cursos/README.md)** divided into 5 modules:
+1. [Environment Setup](cursos/01_configuracion_entorno.md)
+2. [The UCI Protocol](cursos/02_protocolo_uci.md)
+3. [Architecture & Internal Logic](cursos/03_arquitectura_pinguinochess.md)
+4. [Connecting to Chess GUIs](cursos/04_conexion_gui.md)
+5. [Exercises & Extensions](cursos/05_ejercicios_extension.md)
+
 ## Usage
 
 ### Direct Execution
