@@ -31,6 +31,15 @@ pip install chess
 
 3. Descarga el archivo `pinguin_chess_motor_uci.py` en tu máquina.
 
+## Curso Tutorial de Aprendizaje
+
+Para aprender a usar, entender la arquitectura interna, conectarlo a GUIs y extender este repositorio, consulta nuestro **[Curso Interactivo de PingunoChess](cursos/README.md)** en español, dividido en 5 módulos:
+1. [Configuración del Entorno](cursos/01_configuracion_entorno.md)
+2. [El Protocolo UCI](cursos/02_protocolo_uci.md)
+3. [Arquitectura e Lógica Interna](cursos/03_arquitectura_pinguinochess.md)
+4. [Conexión con GUIs de Ajedrez](cursos/04_conexion_gui.md)
+5. [Ejercicios y Extensión](cursos/05_ejercicios_extension.md)
+
 ## Uso
 
 ### Ejecución Directa
